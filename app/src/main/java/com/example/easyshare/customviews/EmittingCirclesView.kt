@@ -16,7 +16,7 @@ class EmittingCirclesView @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttr) {
 
     private val paint: Paint = Paint().apply {
-        color = Color.BLUE
+        color = Color.argb(255,147,112,219)
         style = Paint.Style.FILL
     }
 

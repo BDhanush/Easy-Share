@@ -27,8 +27,9 @@ class nfcFragment : Fragment() {
         arguments?.let {
             link = it.getString(LINK)
         }
-        MyHostApduService.link = link.toString()
-
+        val intent = Intent(context,MyHostApduService::class.java)
+        intent.putExtra("linkString", link);
+        requireActivity().startService(intent)
 
     }
 
@@ -45,19 +46,6 @@ class nfcFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_nfc, container, false)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        val intent = Intent(requireActivity().applicationContext, MyHostApduService::class.java)
-        requireActivity().startService(intent)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        // Stop HCE service
-        val intent = Intent(requireActivity().applicationContext, MyHostApduService::class.java)
-        requireActivity().stopService(intent)
     }
 
     companion object {

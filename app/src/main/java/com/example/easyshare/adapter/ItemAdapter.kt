@@ -1,10 +1,13 @@
 package com.example.easyshare.adapter
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +19,7 @@ import com.google.android.material.card.MaterialCardView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.regex.Pattern
 
+
 class ItemAdapter(private var dataSet: List<Link>) :
     RecyclerView.Adapter<ItemAdapter.ViewHolder>() {
 
@@ -26,6 +30,7 @@ class ItemAdapter(private var dataSet: List<Link>) :
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val titleTextView: TextView = view.findViewById(R.id.title)
         val card:MaterialCardView = view.findViewById(R.id.linkCard)
+        val icon:ImageView = view.findViewById(R.id.icon)
     }
 
     // Create new views (invoked by the layout manager)
@@ -50,6 +55,12 @@ class ItemAdapter(private var dataSet: List<Link>) :
             intent.putExtra("linkString", dataSet[position].linkString)
             intent.putExtra("id", dataSet[position].id)
             viewHolder.itemView.context.startActivity(intent)
+        }
+
+        viewHolder.icon.setOnClickListener {
+            val clipboard: ClipboardManager? = viewHolder.icon.context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
+            val clip = ClipData.newPlainText("link", dataSet[position].linkString)
+            clipboard?.setPrimaryClip(clip)
         }
 
 
