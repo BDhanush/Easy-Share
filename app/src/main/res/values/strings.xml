@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Easy Share</string>
+    <string name="plus">plus</string>
+    <string name="nfc">NFC</string>
+    <string name="qr">QR code</string>
+    <string name="edit">edit</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title">Title</string>
+    <string name="link">Link</string>
+    <string name="aid_group_description">nfc aid group</string>
+    <string name="aiddescription">nfc aid</string>
+    <string name="servicedesc">link share</string>
+</resources>
