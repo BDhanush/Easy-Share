@@ -1,5 +1,7 @@
 package com.example.easyshare
 
+import android.content.pm.PackageManager
+import android.nfc.NfcAdapter
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
@@ -13,6 +15,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 class ShareActivity : AppCompatActivity() {
     private lateinit var binding: ActivityShareBinding
 
+    private var mNfcAdapter: NfcAdapter? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_share)
@@ -20,6 +24,8 @@ class ShareActivity : AppCompatActivity() {
         binding = ActivityShareBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
+        mNfcAdapter = NfcAdapter.getDefaultAdapter(this)
 
         val title=intent.getStringExtra("title").toString()
         val linkString=intent.getStringExtra("linkString").toString()
@@ -66,7 +72,14 @@ class ShareActivity : AppCompatActivity() {
         val nfcFragment = supportFragmentManager.findFragmentByTag("nfcFragment")
         val qrFragment = supportFragmentManager.findFragmentByTag("qrFragment")
 
-        if(qrFragment!=null && qrFragment.isVisible)
+        val hasNFC=supportNfcHceFeature()
+        if(!hasNFC)
+        {
+            binding.nfcToggle.isEnabled=false
+            binding.toggleButtons.check(R.id.qrToggle)
+        }
+
+        if(!hasNFC || (qrFragment!=null && qrFragment.isVisible))
         {
             val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
             transaction.replace(R.id.fragment, com.example.easyshare.qrFragment.newInstance(linkString),"qrFragment")
@@ -75,6 +88,17 @@ class ShareActivity : AppCompatActivity() {
             val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
             transaction.replace(R.id.fragment, com.example.easyshare.nfcFragment.newInstance(linkString),"nfcFragment")
             transaction.commit()
+        }
+    }
+
+    private fun supportNfcHceFeature() =
+        checkNFCEnable() && packageManager.hasSystemFeature(PackageManager.FEATURE_NFC_HOST_CARD_EMULATION)
+
+    private fun checkNFCEnable(): Boolean {
+        return if (mNfcAdapter == null) {
+            false
+        } else {
+            mNfcAdapter?.isEnabled == true
         }
     }
 }
