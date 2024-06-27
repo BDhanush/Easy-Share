@@ -27,8 +27,8 @@ class nfcFragment : Fragment() {
         arguments?.let {
             link = it.getString(LINK)
         }
+        MyHostApduService.LINK = link.toString()
         val intent = Intent(context,MyHostApduService::class.java)
-        intent.putExtra("linkString", link);
         requireActivity().startService(intent)
 
     }

@@ -5,9 +5,7 @@ import android.util.Log
 
 class MyHostApduService : HostApduService() {
     override fun processCommandApdu(commandApdu: ByteArray?, extras: Bundle?): ByteArray {
-        Log.i(TAG, "Testing received ")
-        val link = extras?.getString("link")
-        return link!!.toByteArray(Charsets.UTF_8)
+        return LINK.toByteArray(Charsets.UTF_8)
     }
 
     override fun onDeactivated(reason: Int) {
@@ -16,5 +14,6 @@ class MyHostApduService : HostApduService() {
 
     companion object {
         private const val TAG = "MyHostApduService"
+        var LINK=""
     }
 }
