@@ -15,6 +15,10 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 class ShareActivity : AppCompatActivity() {
     private lateinit var binding: ActivityShareBinding
 
+    private lateinit var title: String
+    private lateinit var linkString: String
+    private var id:Long = 0
+
     private var mNfcAdapter: NfcAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,9 +31,9 @@ class ShareActivity : AppCompatActivity() {
 
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this)
 
-        val title=intent.getStringExtra("title").toString()
-        val linkString=intent.getStringExtra("linkString").toString()
-        val id=intent.getLongExtra("id",0)
+        title=intent.getStringExtra("title").toString()
+        linkString=intent.getStringExtra("linkString").toString()
+        id=intent.getLongExtra("id",0)
 
         setInfo(title,linkString)
 
@@ -66,9 +70,12 @@ class ShareActivity : AppCompatActivity() {
 
     }
 
-    fun setInfo(title:String,linkString: String)
+    fun setInfo(newTitle:String,newLinkString: String)
     {
+        title = newTitle
+        linkString = newLinkString
         setTitle(title)
+
         val nfcFragment = supportFragmentManager.findFragmentByTag("nfcFragment")
         val qrFragment = supportFragmentManager.findFragmentByTag("qrFragment")
 
