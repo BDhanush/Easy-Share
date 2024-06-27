@@ -21,13 +21,14 @@ private const val LINK = "link"
 class nfcFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var link: String? = null
+    private lateinit var intent: Intent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             link = it.getString(LINK)
         }
-        val intent = Intent(context,MyHostApduService::class.java)
+        intent = Intent(context,MyHostApduService::class.java)
         intent.putExtra("ndefMessage", link.toString())
         requireActivity().startService(intent)
 
@@ -46,6 +47,16 @@ class nfcFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_nfc, container, false)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        requireActivity().stopService(intent)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        requireActivity().startService(intent)
     }
 
     companion object {
