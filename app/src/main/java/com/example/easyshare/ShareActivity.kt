@@ -38,14 +38,10 @@ class ShareActivity : AppCompatActivity() {
         setInfo(title,linkString)
 
         binding.nfcToggle.setOnClickListener {
-            val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragment, nfcFragment.newInstance(linkString),"nfcFragment")
-            transaction.commit()
+            setNFCFragment()
         }
         binding.qrToggle.setOnClickListener {
-            val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragment, qrFragment.newInstance(linkString),"qrFragment")
-            transaction.commit()
+            setQRFragment()
         }
 
         binding.editButton.setOnClickListener {
@@ -70,7 +66,7 @@ class ShareActivity : AppCompatActivity() {
 
     }
 
-    fun setInfo(newTitle:String,newLinkString: String)
+    private fun setInfo(newTitle:String, newLinkString: String)
     {
         title = newTitle
         linkString = newLinkString
@@ -83,19 +79,30 @@ class ShareActivity : AppCompatActivity() {
         if(!hasNFC)
         {
             binding.nfcToggle.isEnabled=false
-            binding.toggleButtons.check(R.id.qrToggle)
         }
 
         if(!hasNFC || (qrFragment!=null && qrFragment.isVisible))
         {
-            val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragment, com.example.easyshare.qrFragment.newInstance(linkString),"qrFragment")
-            transaction.commit()
+            setQRFragment()
         }else{
-            val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragment, com.example.easyshare.nfcFragment.newInstance(linkString),"nfcFragment")
-            transaction.commit()
+            setNFCFragment()
         }
+    }
+
+    private fun setQRFragment()
+    {
+        binding.toggleButtons.check(R.id.qrToggle)
+        val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.fragment, qrFragment.newInstance(linkString),"qrFragment")
+        transaction.commit()
+    }
+
+    private fun setNFCFragment()
+    {
+        binding.toggleButtons.check(R.id.nfcToggle)
+        val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.fragment, nfcFragment.newInstance(linkString),"nfcFragment")
+        transaction.commit()
     }
 
     private fun supportNfcHceFeature() =
