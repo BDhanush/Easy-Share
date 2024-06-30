@@ -115,4 +115,9 @@ class ShareActivity : AppCompatActivity() {
             mNfcAdapter?.isEnabled == true
         }
     }
+
+    override fun onResumeFragments() {
+        super.onResumeFragments()
+        setInfo(title,linkString)
+    }
 }
