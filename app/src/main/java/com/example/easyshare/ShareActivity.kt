@@ -23,7 +23,6 @@ class ShareActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_share)
 
         binding = ActivityShareBinding.inflate(layoutInflater)
         val view = binding.root
